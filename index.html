@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <script src="coliquiz.js"></script>
+</head>
+
+<body>
+    <div id="quiz-container">
+        <h1>Quiz Questions</h1>
+
+        <div id="question-container"></div>
+
+        <div id="answer-buttons" class="btn-container"></div>
+    </div>
+
+    <script>
+        var currentQuestionIndex = 0;
+        var questionContainer = document.getElementById('question-container');
+        var answerButtonsContainer = document.getElementById('answer-buttons');
+
+        function startQuiz() {
+            showQuestion(questions[currentQuestionIndex]);
+        }
+
+        function showQuestion(currentQuestion) {
+            questionContainer.innerText = currentQuestion["question"];
+            answerButtonsContainer.innerHTML = '';
+            var answers = currentQuestion["answers"];
+            for (answer in answers) {
+                var button = document.createElement('button');
+                button.innerText = answer;
+                button.value = answer;
+                // button.classList.add('btn');
+                button.addEventListener('click', selectAnswer);
+                answerButtonsContainer.appendChild(button);
+            }
+        }
+
+        function showResults() {
+            // var result = "<table><th><td>Muhely</td><td>Pont</td></th>"
+            // for (var muhely in scores) {
+            //     result+= "\n<tr><td>"+ muhely + "</td><td>" + scores[muhely] + "</td></tr>"
+            // }
+            // questionContainer.innerHTML = result + "</table>"
+            answerButtonsContainer.innerHTML = ""
+
+            var maxValue = 0;
+            var maxMuhely = [];
+            for (var muhely in scores) {
+                if (scores[muhely] > maxValue) {
+                    maxMuhely = [muhely];
+                    maxValue = scores[muhely];
+                } else if (scores[muhely] == maxValue) {
+                    maxMuhely = maxMuhely.concat(muhely);
+                }
+            }
+
+            console.log(maxMuhely)
+            var result = maxMuhely + " műhelyes lennél."
+            questionContainer.innerHTML = result;
+            answerButtonsContainer.innerHTML = ""
+
+        }
+        function selectAnswer(event) {
+            console.log("selectAnswer was called. Selected:" + event.target.value)
+            var selectedAnswer = event.target.value;
+            var incrementList = questions[currentQuestionIndex].answers[selectedAnswer];
+            
+            for (const toIncrement of incrementList) {
+                scores[toIncrement]++;
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion(questions[currentQuestionIndex]);
+            } else {
+                showResults();
+                // Display the final scores or navigate to the next page
+                // Example: window.location.href = 'results.html';
+            }
+        }
+
+        // Start the quiz when the page loads
+        startQuiz();
+    </script>
+</body>
+
+</html>
