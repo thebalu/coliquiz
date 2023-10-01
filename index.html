@@ -65,7 +65,8 @@
             }
 
             console.log(maxMuhely)
-            var result = maxMuhely.join(', ') + " műhelyes lennél! 🥳"
+            const muhelyek = maxMuhely.join(', ');
+            var result = muhelyek + " műhelyes lennél! 🥳"
             result += "<div class='pyro'><div class='before'></div><div class='after'></div></div>";
           
             var button = document.createElement('button');
@@ -73,9 +74,29 @@
             button.classList = "btn btn-outline-primary btn-block btn-lg"
             button.addEventListener('click', restartQuiz);
             
+            const shareData = {
+                title: "ColiQuiz",
+                text: muhelyek + " műhelyes lennék az Eötvös Coliban. Nézd meg te is:",
+                url: "https://thebalu.github.io/coliquiz/",
+            };
+
+            const btn = document.createElement('button');
+            btn.innerText = "Megosztás";
+            btn.classList = "btn btn-outline-primary btn-block btn-lg"
+
+            btn.addEventListener("click", async () => {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                console.log("share failed, " + err)
+            }
+            });
+
+
             questionContainer.innerHTML = result;
             answerButtonsContainer.innerHTML = "";
             answerButtonsContainer.appendChild(button);
+            answerButtonsContainer.appendChild(btn);
 
         }
 
