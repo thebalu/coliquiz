@@ -44,7 +44,7 @@
                 button.innerText = answer;
                 button.value = answer;
                 button.type ="button"
-                button.classList = "btn btn-outline-primary btn-block btn-lg"
+                button.classList = "btn btn-info btn-block btn-lg"
                 button.addEventListener('click', selectAnswer);
                 answerButtonsContainer.appendChild(button);
             }
@@ -65,7 +65,7 @@
             }
 
             console.log(maxMuhely)
-            var result = maxMuhely + " műhelyes lennél! 🥳"
+            var result = maxMuhely.join(', ') + " műhelyes lennél! 🥳"
             result += "<div class='pyro'><div class='before'></div><div class='after'></div></div>";
           
             var button = document.createElement('button');
