@@ -5,17 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="coliquiz.js"></script>
 </head>
 
-<body>
-    <div id="quiz-container">
-        <h1>Quiz Questions</h1>
+<body class="bg-white">
+    <div class="h-75 d-flex align-items-center justify-content-center" id="quiz-container">
+        <div style="min-height: 100vh;" class="container border p-2 text-center bg-light">
+        <img class="img-fluid" style="max-width: 15%;" src="https://scontent-vie1-1.xx.fbcdn.net/v/t39.30808-6/291412552_434399755364064_8083493995796462116_n.png?_nc_cat=103&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=R7Jrb1zQDcYAX_ByeVO&_nc_ht=scontent-vie1-1.xx&oh=00_AfDrE6RjLRtirnyORLlKMqgGoSdcMQ_UwLLIh5TEcIixOA&oe=651DCD55"> <h2>Milyen műhelyes lennél?</h2>
+        
+        <div class="p-4 mt-5 container border">
+            
+            <h1><div class="model-header" id="question-container"></div></h1>
 
-        <div id="question-container"></div>
-
-        <div id="answer-buttons" class="btn-container"></div>
+            <div class="p-4" id="answer-buttons"></div></div>
+        </div>
     </div>
+
 
     <script>
         var currentQuestionIndex = 0;
@@ -34,18 +43,14 @@
                 var button = document.createElement('button');
                 button.innerText = answer;
                 button.value = answer;
-                // button.classList.add('btn');
+                button.type ="button"
+                button.classList = "btn btn-outline-primary btn-block btn-lg"
                 button.addEventListener('click', selectAnswer);
                 answerButtonsContainer.appendChild(button);
             }
         }
 
         function showResults() {
-            // var result = "<table><th><td>Muhely</td><td>Pont</td></th>"
-            // for (var muhely in scores) {
-            //     result+= "\n<tr><td>"+ muhely + "</td><td>" + scores[muhely] + "</td></tr>"
-            // }
-            // questionContainer.innerHTML = result + "</table>"
             answerButtonsContainer.innerHTML = ""
 
             var maxValue = 0;
@@ -60,16 +65,33 @@
             }
 
             console.log(maxMuhely)
-            var result = maxMuhely + " műhelyes lennél."
+            var result = maxMuhely + " műhelyes lennél! 🥳"
+            result += "<div class='pyro'><div class='before'></div><div class='after'></div></div>";
+          
+            var button = document.createElement('button');
+            button.innerText = "Újrakezdem";
+            button.classList = "btn btn-outline-primary btn-block btn-lg"
+            button.addEventListener('click', restartQuiz);
+            
             questionContainer.innerHTML = result;
-            answerButtonsContainer.innerHTML = ""
+            answerButtonsContainer.innerHTML = "";
+            answerButtonsContainer.appendChild(button);
 
         }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            showQuestion(questions[currentQuestionIndex]);
+            for (var muhely in scores) {
+                scores[muhely] = 0;
+            }
+        }
+
         function selectAnswer(event) {
             console.log("selectAnswer was called. Selected:" + event.target.value)
             var selectedAnswer = event.target.value;
             var incrementList = questions[currentQuestionIndex].answers[selectedAnswer];
-            
+
             for (const toIncrement of incrementList) {
                 scores[toIncrement]++;
             }
